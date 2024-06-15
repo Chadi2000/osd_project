@@ -1,0 +1,119 @@
+.app__todo{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 1920px;
+}
+
+.app__todo-header{
+    display: flex;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1920px;
+    height: 68px;
+    background: #232323 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 4px #15223214;
+    opacity: 1;
+}
+
+.img_logo{
+    position: absolute;
+    top: 5px;
+    left: 34px;
+    width: 94px;
+    height: 57px;
+    background: transparent no-repeat;
+    background-size: cover;
+    opacity: 1;
+}
+
+.img_search{
+    position:absolute;
+    top: 22px;
+    left: 1715px;
+    width: 24px;
+    height: 24px;
+    background: transparent  0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+.img_circle{
+    position: absolute;
+    top: 22px;
+    left: 1778px;
+    width: 24px;
+    height: 24px;
+    background: transparent 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+.img_bitmap{
+    position: absolute;
+    top: 13px;
+    left: 1833px;
+    width: 42px;
+    height: 42px;
+    opacity: 1;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.app_todo-todo-list-header{
+    position:absolute;
+    top: 68px;
+    left: 0px;
+    width: 1920px;
+    height: 68px;
+    background: transparent linear-gradient(180deg, #6E4C85 0%, #2D2B52 100%) 0% 0% no-repeat padding-box;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    
+}
+
+.quote{
+    position: absolute;
+    left:44px;
+    width: 344px;
+    height: 21px;
+    color: var(--color-white);
+    text-align: left;
+    font-style: italic;
+    font-weight: normal;
+    font-variant: normal;
+    font-size: 18px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    opacity: 1;
+}
+
+.remove_quote{
+    position: absolute;
+    top: 21px;
+    left: 1847px;
+    width: 21px;
+    height: 21px;
+    background: transparent 0% 0% no-repeat padding-box;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.background{
+    width: 1920px;
+    height: 1526px;
+    border: 1px solid var(--color-grey);
+    background: #5B5E60 0% 0% no-repeat padding-box;
+    border: 1px solid var(--color-grey);
+    opacity: 1;
+    position: absolute;
+}
+
+.show_quote{
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+

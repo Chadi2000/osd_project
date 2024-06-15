@@ -1,0 +1,6 @@
+.app__todo{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 1920px;
+}

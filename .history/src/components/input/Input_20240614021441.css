@@ -1,0 +1,33 @@
+.app_input{
+    width: 514px;
+    height: 24px;
+}
+
+.textLabel{
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color:var(--color-white);
+    opacity: 1;
+}
+
+#input{
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 90%;
+
+}
+
+
+#input:focus{
+    border-color: gray;
+    outline: none;
+}

@@ -1,0 +1,11 @@
+.app_login{
+    display: flex;
+    flex-direction: row;
+}
+
+.app_login-left_side{
+    width: 65%;
+    height: 100vh;
+    background: #212121 0% 0% no-repeat padding-box;
+    opacity: 1;
+}

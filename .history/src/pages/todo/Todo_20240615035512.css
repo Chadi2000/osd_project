@@ -1,0 +1,39 @@
+.app__todo{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 1920px;
+}
+
+.app__todo-header{
+    display: flex;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 1920px;
+    height: 68px;
+    background: #232323 0% 0% no-repeat padding-box;
+    box-shadow: 0px 1px 4px #15223214;
+    opacity: 1;
+}
+
+.img_logo{
+    position: absolute;
+    top: 5px;
+    left: 34px;
+    width: 94px;
+    height: 57px;
+    background: transparent no-repeat;
+    background-size: cover;
+    opacity: 1;
+}
+
+.img_search{
+    position:absolute;
+    top: 22px;
+    left: 1715px;
+    width: 24px;
+    height: 24px;
+    opacity: 1;
+}
+

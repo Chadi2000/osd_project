@@ -1,0 +1,19 @@
+.app_login{
+    display: flex;
+    flex-direction: row;
+}
+
+.app_login-left_side{
+    width: 938px;
+    height: 100vh;
+    background: #212121 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+
+.app_login-right_side{
+    width: 982px;
+    height: 100vh;
+    background: #212121 0% 0% no-repeat padding-box;
+    opacity: 1;
+}

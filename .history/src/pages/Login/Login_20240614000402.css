@@ -1,0 +1,44 @@
+.app_login{
+    display: flex;
+    flex-direction: row;
+    background: #212121 0% 0% no-repeat padding-box;
+    align-items: center;
+    justify-content: center;
+    width: 1920px;
+    height: 100vh;
+    position: relative;
+    opacity: 1;
+    background: #212121 0% 0% no-repeat padding-box;
+    border: 1px solid red;
+    box-sizing: border-box;
+}
+top: 0px;
+left: 0px;
+width: 1920px;
+height: 1080px;
+/* UI Properties */
+
+opacity: 1;
+
+.app_login-left_side-logo{
+    position: absolute;
+    display: flex;
+    width: 548px;
+    height: 333px;
+    position: absolute;
+    top: 250px;
+    left: 200px;
+    width: 448px;
+    height: 233px;
+    opacity: 1;
+    border: 1px solid white;
+}
+
+
+.app_login-right_side{
+    width: 982px;
+    height: 100vh;
+    background: transparent linear-gradient(180deg, #8556A4 0%, #2D2B52 100%) 0% 0% no-repeat padding-box;
+    border: 1px solid #707070;
+    opacity: 1;
+}
