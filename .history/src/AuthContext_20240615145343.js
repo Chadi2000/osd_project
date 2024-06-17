@@ -1,4 +1,3 @@
-// AuthContext.js
 import React, { createContext, useState, useContext } from 'react';
 
 const AuthContext = createContext();
@@ -9,14 +8,16 @@ export const AuthProvider = ({ children }) => {
     return savedAuthState === 'true';
   });
 
-  const login = () => {
+  const login = (email) => {
     setIsAuthenticated(true);
     localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('email', email)
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.setItem('isAuthenticated', 'false');
+    localStorage.setItem('email','')
   };
 
   return (

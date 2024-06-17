@@ -1,0 +1,71 @@
+.boxTodo_container {
+    width: 418px;
+    height: 213px;
+    background: var(--color-black-background) 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 6px;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .boxTodo_content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .boxTodo_header {
+    width: 100%;
+    color: var(--color-white);
+    text-align: left;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 14px;
+  }
+
+  .boxTodo_body {
+    display: flex;
+    flex-direction: column;
+    gap: 22px; 
+  }
+  
+  .rowTodo {
+    display: flex;
+    justify-content: flex-start;
+    gap: 50px;
+    align-items: center;
+  }
+  
+  .rowTodo label {
+    font-weight: bold;
+    color: var(--color-white);
+  }
+  
+  .rowTodo h4 {
+    margin: 0;
+    color: var(--color-white);
+  }
+  
+  .boxTodo_importance {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .importance_button {
+    background-color: transparent;
+    border: none;
+    color: #dc3545;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .importance_button:hover {
+    text-decoration: underline;
+  }
+  
