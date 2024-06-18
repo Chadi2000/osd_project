@@ -7,7 +7,7 @@ import axios from 'axios';
 const BoxTodo = ({ Id,title, category, dueDate, estimate, importance }) => {
     const [backgroundColor, setBackGroundColor] = useState('');
     const [currentTitle, setCurrentTitle] = useState(title);
-    const [initialTitle, setInitialTitle] = useState(title);
+    //const [initialTitle, setInitialTitle] = useState(title);
     const [isEditing, setIsEditing] = useState(false);
 
     const determineImportance = (importance) => {
@@ -22,12 +22,12 @@ const BoxTodo = ({ Id,title, category, dueDate, estimate, importance }) => {
 
     const handleTitleClick = () => {
         setIsEditing(true);
-        setInitialTitle(currentTitle);
+        //setInitialTitle(currentTitle);
         console.log(Id)
     };
 
     const handleCancelEdit = () => {
-        setCurrentTitle(initialTitle);
+        //setCurrentTitle(initialTitle);
         setIsEditing(false);
     };
 

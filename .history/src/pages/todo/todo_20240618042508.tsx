@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './todo.css';
 import { useAuth } from '../../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,6 @@ import axios from 'axios';
 import InputField from '../../components/InputField/InputField.tsx';
 import HeaderTodo from '../../components/headerTodo/HeaderTodo.tsx';
 import BoxTodo from '../../components/boxTodo/BoxTodo.tsx';
-import {toast, Toaster} from 'react-hot-toast'
 // import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 
@@ -20,7 +19,7 @@ const Todo = () => {
   const [category, setCategory] = useState('');
   const [dueDate,setDueDate] = useState('');
   const [estimatedValue, setEstimatedValue] = useState(0);
-  const [estimatedUnit, setEstimatedUnit] = useState('Minute');
+  const [estimatedUnit, setEstimatedUnit] = useState('');
   const[importance, setImportance] = useState('Low');
   const [searchTerm, setSearchTerm] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
@@ -36,18 +35,11 @@ const Todo = () => {
   }
 
   const [todos, setTodos] = useState<Todo[]>([]);
-
-  const fetchTodos = useCallback(() => {
-    fetch(`https://localhost:44387/api/Test/GetTodosByEmail?email=${email}`)
-      .then(response => response.json())
-      .then(data => setTodos(data))
-      .catch(error => console.error('Error fetching todos:', error));
-  }, [email]);
-
   useEffect(() => {
-    fetchTodos();
-  }, [fetchTodos]);
-
+    fetch(`https://localhost:44387/api/Test/GetTodosByEmail?email=${email}`)
+        .then(response => response.json())
+        .then(data => setTodos(data));
+  }, [email]);
 
   const filteredTodos = todos.filter(todo =>
     todo.Title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -59,8 +51,7 @@ const Todo = () => {
       .filter(todo => todo.Status === status)
       .map((todo,index) => (
         <BoxTodo
-          //index={index}
-          key={`${todo.Id}-${index}`}
+          key={index}
           Id={todo.Id}
           title={todo.Title}
           category={todo.Category}
@@ -71,70 +62,50 @@ const Todo = () => {
       ));
   };
   const handleValueChange = (e) => {
-    const value = e.target.value;
-    if (value >= 0) {
-      setEstimatedValue(value);
-    }
+    setEstimatedValue(e.target.value);
   };
 
   const handleUnitChange = (e) => {
     setEstimatedUnit(e.target.value);
   };
 
-  const validateForm = () =>{
-    if(!title || !category || !dueDate ){
-      toast.error('Missing required Fields')
-      return false
-    }
-    return true;
-  }
-
 
   const handleSave = () => {
-    if (!validateForm()) return;
-  
     const data = {
       Title: title,
       Category: category,
       DueDate: dueDate,
       Estimate: `${estimatedValue} ${estimatedUnit}`,
       Importance: importance,
-      Email: email
+      Email:email
     };
-  
     const url = 'https://localhost:44387/api/Test/TodoInsert';
-  
-    axios.post(url, data).then((result) => {
-      toast.success(result.data);
-      
-      const newTodo = {
-        Id: result.data.Id,
-        Title: title,
-        Category: category,
-        DueDate: dueDate,
-        Estimate: `${estimatedValue} ${estimatedUnit}`,
-        Importance: importance,
-        Email: data.Email,
-        Status: 'Todo'
-      };
-  
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
-      console.log('new todos:', JSON.stringify([newTodo, ...todos]));
-      getDataByStatus('Todo');
-      fetchTodos();
-      setTitle('');
-      setCategory('');
-      setDueDate('');
-      setEstimatedValue(0);
-      setEstimatedUnit('Minute');
-      setImportance('Low');
-    }).catch((error) => {
-      toast.error(error.message || 'An error occurred');
-    });
-  };
-  
+    axios.post(url,data).then((result) =>{
+        alert(result.data);
+        const newTodo: Todo = {
+          Id: result.data.Id,
+          Title: title,
+          Category: category,
+          DueDate: dueDate,
+          Estimate: `${estimatedValue} ${estimatedUnit}`,
+          Importance: importance,
+          Email: data.Email,
+          Status: 'Todo'
+        }
+        setTodos((prevTodos)=>[...prevTodos, newTodo]);
+        console.log('new todos:' + JSON.stringify(todos))
+        setTitle('');
+        setCategory('')
+        setDueDate('');
+        setEstimatedValue(0);
+        setEstimatedUnit('');
+        setImportance('');
+    }).catch((error)=>{
+        alert(error);
+    })
 
 
+}
 
   const handleLogout = () => {
     logout();
@@ -207,7 +178,7 @@ const Todo = () => {
           <div className='add_item-row'>
             <label className='item-label'>estimate</label>
             <div className='input_title'>
-            <input style={{width:'40px'}} type='number' min={0} className='input_title' placeholder='Enter estimate' value={estimatedValue} onChange={handleValueChange} /><br></br>
+            <input style={{width:'40px'}} type='number' className='input_title' placeholder='Enter estimate' value={estimatedValue} onChange={handleValueChange} /><br></br>
               <select value={estimatedUnit} onChange={handleUnitChange} className='input_title' id="">
                   <option value="minute">Minute</option>
                   <option value="hour">Hour</option>
@@ -227,7 +198,6 @@ const Todo = () => {
             </select>
           </div>
           <button className='save_button' onClick={() => handleSave()}>Save</button>
-          <Toaster />
         </div>
 
       <div className='background'>

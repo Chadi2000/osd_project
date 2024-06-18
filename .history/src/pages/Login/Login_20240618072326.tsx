@@ -33,11 +33,11 @@ const Login = () => {
         login(email);
         navigate('/todo');
       } else{
-        toast.error('Incorret Email or Password');
+        toast.error('Invalid credentials');
       }
 
     }).catch((error) =>{
-      toast.error(error);
+      alert(error);
     })
   }
 

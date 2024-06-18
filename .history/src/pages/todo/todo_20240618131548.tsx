@@ -59,8 +59,7 @@ const Todo = () => {
       .filter(todo => todo.Status === status)
       .map((todo,index) => (
         <BoxTodo
-          //index={index}
-          key={`${todo.Id}-${index}`}
+          key={index}
           Id={todo.Id}
           title={todo.Title}
           category={todo.Category}
@@ -92,7 +91,7 @@ const Todo = () => {
 
   const handleSave = () => {
     if (!validateForm()) return;
-  
+
     const data = {
       Title: title,
       Category: category,
@@ -101,27 +100,13 @@ const Todo = () => {
       Importance: importance,
       Email: email
     };
-  
+
     const url = 'https://localhost:44387/api/Test/TodoInsert';
-  
+
     axios.post(url, data).then((result) => {
       toast.success(result.data);
-      
-      const newTodo = {
-        Id: result.data.Id,
-        Title: title,
-        Category: category,
-        DueDate: dueDate,
-        Estimate: `${estimatedValue} ${estimatedUnit}`,
-        Importance: importance,
-        Email: data.Email,
-        Status: 'Todo'
-      };
-  
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
-      console.log('new todos:', JSON.stringify([newTodo, ...todos]));
-      getDataByStatus('Todo');
       fetchTodos();
+      console.log('new todos:', JSON.stringify(todos));
       setTitle('');
       setCategory('');
       setDueDate('');
@@ -132,8 +117,6 @@ const Todo = () => {
       toast.error(error.message || 'An error occurred');
     });
   };
-  
-
 
 
   const handleLogout = () => {

@@ -54,12 +54,11 @@ const Todo = () => {
   );
 
   const getDataByStatus = (status) => {
-    return filteredTodos
+    return todos
       .sort((a, b) => b.Id - a.Id)
       .filter(todo => todo.Status === status)
       .map((todo,index) => (
         <BoxTodo
-          //index={index}
           key={`${todo.Id}-${index}`}
           Id={todo.Id}
           title={todo.Title}
@@ -118,10 +117,10 @@ const Todo = () => {
         Status: 'Todo'
       };
   
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
+      setTodos((prevTodos) => [newTodo, ...prevTodos]); // Prepend the new todo
       console.log('new todos:', JSON.stringify([newTodo, ...todos]));
-      getDataByStatus('Todo');
-      fetchTodos();
+  
+      // Reset form fields
       setTitle('');
       setCategory('');
       setDueDate('');

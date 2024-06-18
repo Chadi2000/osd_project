@@ -5,7 +5,7 @@ import Input from '../../components/input/Input.tsx';
 import axios from 'axios';
 import { useAuth } from '../../utils/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -33,11 +33,11 @@ const Login = () => {
         login(email);
         navigate('/todo');
       } else{
-        toast.error('Incorret Email or Password');
+        toast.error('Invalid credentials');
       }
 
     }).catch((error) =>{
-      toast.error(error);
+      alert(error);
     })
   }
 
@@ -69,7 +69,6 @@ const Login = () => {
         </div>
 
         <button className='signIn_button' onClick={() => handleLogin()}>SIGN IN</button>
-        <Toaster />
 
 
       </div>

@@ -3,8 +3,9 @@ import './boxtodo.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { Draggable } from 'react-beautiful-dnd';
 
-const BoxTodo = ({ Id,title, category, dueDate, estimate, importance }) => {
+const BoxTodo = ({ Id,title, category, dueDate, estimate, importance,index }) => {
     const [backgroundColor, setBackGroundColor] = useState('');
     const [currentTitle, setCurrentTitle] = useState(title);
     const [initialTitle, setInitialTitle] = useState(title);
@@ -50,7 +51,8 @@ const BoxTodo = ({ Id,title, category, dueDate, estimate, importance }) => {
     }, [importance]);
 
     return (
-        <div className='boxTodo_container'>
+        <Draggable key={Id} draggableId={Id} index={index}>
+            <div className='boxTodo_container'>
             <div className='boxTodo_content'>
                 {isEditing ? (
                     <div>
@@ -103,6 +105,7 @@ const BoxTodo = ({ Id,title, category, dueDate, estimate, importance }) => {
                 </div>
             </div>
         </div>
+        </Draggable>
     );
 };
 

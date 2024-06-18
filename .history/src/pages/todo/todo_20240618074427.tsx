@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './todo.css';
 import { useAuth } from '../../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -37,16 +37,16 @@ const Todo = () => {
 
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  const fetchTodos = useCallback(() => {
+  const fetchTodos = () => {
     fetch(`https://localhost:44387/api/Test/GetTodosByEmail?email=${email}`)
       .then(response => response.json())
       .then(data => setTodos(data))
       .catch(error => console.error('Error fetching todos:', error));
-  }, [email]);
+  };
 
   useEffect(() => {
     fetchTodos();
-  }, [fetchTodos]);
+  }, [email]);
 
 
   const filteredTodos = todos.filter(todo =>
@@ -59,8 +59,7 @@ const Todo = () => {
       .filter(todo => todo.Status === status)
       .map((todo,index) => (
         <BoxTodo
-          //index={index}
-          key={`${todo.Id}-${index}`}
+          key={index}
           Id={todo.Id}
           title={todo.Title}
           category={todo.Category}
@@ -82,7 +81,7 @@ const Todo = () => {
   };
 
   const validateForm = () =>{
-    if(!title || !category || !dueDate ){
+    if(!title || !category || !dueDate || estimatedValue<=0){
       toast.error('Missing required Fields')
       return false
     }
@@ -91,49 +90,30 @@ const Todo = () => {
 
 
   const handleSave = () => {
-    if (!validateForm()) return;
-  
+    if(!validateForm()) return;
     const data = {
       Title: title,
       Category: category,
       DueDate: dueDate,
       Estimate: `${estimatedValue} ${estimatedUnit}`,
       Importance: importance,
-      Email: email
+      Email:email
     };
-  
     const url = 'https://localhost:44387/api/Test/TodoInsert';
-  
-    axios.post(url, data).then((result) => {
-      toast.success(result.data);
-      
-      const newTodo = {
-        Id: result.data.Id,
-        Title: title,
-        Category: category,
-        DueDate: dueDate,
-        Estimate: `${estimatedValue} ${estimatedUnit}`,
-        Importance: importance,
-        Email: data.Email,
-        Status: 'Todo'
-      };
-  
-      setTodos((prevTodos) => [newTodo, ...prevTodos]);
-      console.log('new todos:', JSON.stringify([newTodo, ...todos]));
-      getDataByStatus('Todo');
-      fetchTodos();
-      setTitle('');
-      setCategory('');
-      setDueDate('');
-      setEstimatedValue(0);
-      setEstimatedUnit('Minute');
-      setImportance('Low');
-    }).catch((error) => {
-      toast.error(error.message || 'An error occurred');
-    });
-  };
-  
-
+    axios.post(url,data).then((result) =>{
+          toast.success(result.data);
+        fetchTodos();
+        console.log('new todos:' + JSON.stringify(todos))
+        setTitle('');
+        setCategory('')
+        setDueDate('');
+        setEstimatedValue(0);
+        setEstimatedUnit('Minute');
+        setImportance('Low');
+    }).catch((error)=>{
+        toast.error(error);
+    })
+}
 
 
   const handleLogout = () => {
