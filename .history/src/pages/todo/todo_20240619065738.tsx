@@ -24,6 +24,7 @@ const Todo = () => {
   const [importance, setImportance] = useState('Low');
   const [searchTerm, setSearchTerm] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   interface Todo {
     Id: number;
@@ -73,6 +74,9 @@ const Todo = () => {
     }
   };
 
+  const handleDragging = () => {
+    setIsDragging(!isDragging);
+  };
 
   const handleUnitChange = (e) => {
     setEstimatedUnit(e.target.value);
@@ -166,19 +170,9 @@ const Todo = () => {
         const updatedTodos = arrayMove(prevTodos, oldIndex, newIndex);
 
         const updatedTodo = updatedTodos.find(todo => todo.Id === active.id);
-        if (updatedTodo) {
-          if (todos.filter(todo => todo.Status === 'Todo').length === 0) {
-            updatedTodo.Status = findStatus(updatedTodo.Id);
-          }
-           else if (todos.filter(todo => todo.Status === 'Doing').length === 0) {
-            updatedTodo.Status = findStatus(updatedTodo.Id);
-          } else if (todos.filter(todo => todo.Status === 'Done').length === 0) {
-            updatedTodo.Status = findStatus(updatedTodo.Id)
-          }
-          else if(over.data.current?.sortable?.containerId) {
-              updatedTodo.Status = over.data.current.sortable.containerId;
-            }
-      }
+        if (updatedTodo && over.data.current?.sortable?.containerId) {
+          updatedTodo.Status = over.data.current.sortable.containerId;
+        }
 
         const updateStatus = async () => {
           const url = `https://localhost:44387/api/Test/UpdateTodoStatus?Id=${updatedTodo?.Id}&Status=${updatedTodo?.Status}`;
@@ -195,23 +189,6 @@ const Todo = () => {
         return updatedTodos;
       });
     }
-  };
-
-  const findStatus = (id) => {
-    const todo = todos.find(todo => todo.Id === id);
-    if (todo) {
-      switch (todo.Status) {
-        case 'Todo':
-          return 'Doing';
-        case 'Doing':
-          return 'Done';
-        case 'Done':
-          return 'Todo';
-        default:
-          return todo.Status;
-      }
-    }
-    return 'Todo';
   };
 
   return (
@@ -257,9 +234,9 @@ const Todo = () => {
         <div className='add_item-title'>Add New Item</div>
         <InputField label="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter title" />
         <InputField label="Category" type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Enter category" />
-        <InputField label="Due Date" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+        <InputField label="Date" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
         <div className='add_item-row'>
-          <label className='item-label'>Estimate</label>
+          <label className='item-label'>estimate</label>
           <div className='input_title'>
             <input style={{ width: '40px' }} type='number' min={0} className='input_title' placeholder='Enter estimate' value={estimatedValue} onChange={handleValueChange} /><br />
             <select value={estimatedUnit} onChange={handleUnitChange} className='input_title' id="">
@@ -270,7 +247,7 @@ const Todo = () => {
           </div>
         </div>
         <div className='add_item-row'>
-          <label className='item-label'>Importance</label>
+          <label className='item-label'>importance</label>
           <select value={importance} onChange={(e) => {
             const selectedValue = e.target.value;
             setImportance(selectedValue === '' ? 'Low' : selectedValue);
@@ -286,6 +263,9 @@ const Todo = () => {
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <div className='background'>
           <div style={{ position: 'absolute', left: '1600px', top: isQuoteVisible ? '550px' : '482px' }}>
+            <button className='dragging_button' onClick={handleDragging}>
+              {isDragging ? 'Stop Dragging' : 'Start Dragging'}
+            </button>
           </div>
           <div>
             <div style={{ display: 'flex' }}>
@@ -298,7 +278,7 @@ const Todo = () => {
                 items={todos.filter(todo => todo.Status === 'Todo').map(todo => todo.Id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div style={{ border: '2px solid', borderRadius: '10px', height: isQuoteVisible?'1300px':'1368px', width:'418px',position: 'absolute', left: '34px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ border: '2px solid', borderRadius: '10px', height: '1000px', width:'418px',position: 'absolute', left: '34px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {getDataByStatus('Todo')}
                   {todos.filter(todo => todo.Status === 'Todo').length === 0 && <EmptyPlaceholder />}
                 </div>
@@ -314,7 +294,7 @@ const Todo = () => {
                 items={todos.filter(todo => todo.Status === 'Doing').map(todo => todo.Id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div style={{ border: '2px solid', borderRadius: '10px', height: isQuoteVisible?'1300px':'1368px', width: '418px', position: 'absolute', left: '487px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ border: '2px solid', borderRadius: '10px', height: '1000px', width: '418px', position: 'absolute', left: '487px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {getDataByStatus('Doing')}
                   {todos.filter(todo => todo.Status === 'Doing').length === 0 && <EmptyPlaceholder />}
                 </div>
@@ -330,7 +310,7 @@ const Todo = () => {
                 items={todos.filter(todo => todo.Status === 'Done').map(todo => todo.Id)}
                 strategy={verticalListSortingStrategy}
               >
-                <div style={{ border: '2px solid', borderRadius: '10px', height: isQuoteVisible?'1300px':'1368px', width:'418px',position: 'absolute', left: '939px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                <div style={{ border: '2px solid', borderRadius: '10px', height: '1000px', width:'418px',position: 'absolute', left: '939px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {getDataByStatus('Done')}
                   {todos.filter(todo => todo.Status === 'Done').length === 0 && <EmptyPlaceholder />}
                 </div>
@@ -355,12 +335,13 @@ const SortableItem = ({ id, todo }) => {
     setNodeRef,
     transform,
     transition,
+    isDragging
   } = useSortable({ id });
 
   const style = {
-    transform: transform ? CSS.Transform.toString(transform) : undefined,
-    transition: transition,
-    touchAction: 'none',
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   return (

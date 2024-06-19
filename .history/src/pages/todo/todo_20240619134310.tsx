@@ -259,7 +259,7 @@ const Todo = () => {
         <InputField label="Category" type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Enter category" />
         <InputField label="Due Date" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
         <div className='add_item-row'>
-          <label className='item-label'>Estimate</label>
+          <label className='item-label'>estimate</label>
           <div className='input_title'>
             <input style={{ width: '40px' }} type='number' min={0} className='input_title' placeholder='Enter estimate' value={estimatedValue} onChange={handleValueChange} /><br />
             <select value={estimatedUnit} onChange={handleUnitChange} className='input_title' id="">
@@ -270,7 +270,7 @@ const Todo = () => {
           </div>
         </div>
         <div className='add_item-row'>
-          <label className='item-label'>Importance</label>
+          <label className='item-label'>importance</label>
           <select value={importance} onChange={(e) => {
             const selectedValue = e.target.value;
             setImportance(selectedValue === '' ? 'Low' : selectedValue);

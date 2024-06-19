@@ -55,7 +55,6 @@ const Todo = () => {
 
   const getDataByStatus = (status) => {
     return filteredTodos
-      .sort((a, b) => b.Id - a.Id)
       .filter(todo => todo.Status === status)
       .map((todo, index) => (
         <SortableItem
@@ -257,9 +256,9 @@ const Todo = () => {
         <div className='add_item-title'>Add New Item</div>
         <InputField label="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Enter title" />
         <InputField label="Category" type="text" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Enter category" />
-        <InputField label="Due Date" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+        <InputField label="Date" type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
         <div className='add_item-row'>
-          <label className='item-label'>Estimate</label>
+          <label className='item-label'>estimate</label>
           <div className='input_title'>
             <input style={{ width: '40px' }} type='number' min={0} className='input_title' placeholder='Enter estimate' value={estimatedValue} onChange={handleValueChange} /><br />
             <select value={estimatedUnit} onChange={handleUnitChange} className='input_title' id="">
@@ -270,7 +269,7 @@ const Todo = () => {
           </div>
         </div>
         <div className='add_item-row'>
-          <label className='item-label'>Importance</label>
+          <label className='item-label'>importance</label>
           <select value={importance} onChange={(e) => {
             const selectedValue = e.target.value;
             setImportance(selectedValue === '' ? 'Low' : selectedValue);
