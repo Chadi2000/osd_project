@@ -21,22 +21,23 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
   };
 
   const handleTitleClick = (e) => {
-    // Prevent propagation to parent elements like SortableItem
     e.stopPropagation();
     setIsEditing(true);
     setInitialTitle(currentTitle);
+    console.log(Id);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (e) => {
+    e.stopPropagation();
     setCurrentTitle(initialTitle);
     setIsEditing(false);
   };
 
-  const handleConfirmEdit = () => {
+  const handleConfirmEdit = (e) => {
+    e.stopPropagation();
     const url = `https://localhost:44387/api/Test/UpdateTodoTitle?Id=${Id}&Title=${encodeURIComponent(currentTitle)}`;
 
-    axios
-      .put(url)
+    axios.put(url)
       .then((result) => {
         alert(result.data);
         setIsEditing(false);
@@ -44,6 +45,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
       .catch((error) => {
         alert(error.message);
       });
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -61,6 +63,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
               value={currentTitle}
               onChange={(e) => setCurrentTitle(e.target.value)}
               autoFocus
+              onClick={(e) => e.stopPropagation()}
             />
             <div style={{ display: 'flex', gap: '6px', position: 'absolute' }}>
               <div className='icons' style={{ display: 'flex', gap: '5px' }}>
@@ -87,7 +90,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
               className='edit_icon'
               onClick={handleTitleClick}
               icon={faEdit}
-              style={{ color: 'white', cursor: 'pointer' }}
+              style={{ color: 'white' }}
             />
           </div>
         )}

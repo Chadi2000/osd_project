@@ -290,8 +290,8 @@ const Todo = () => {
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={todos.map(todo => todo.Id)}>
           <div className='background'>
-            <div style={{position:'absolute',left:'1600px',top: isQuoteVisible ? '550px' : '482px'}}>
-              <button className='dragging_button' onClick={handleDragging}>
+            <div style={{position:'absolute',left:'1600px',top:'550px'}}>
+              <button style={{padding:'10px'}} onClick={handleDragging}>
                 {isDragging? 'Stop Dragging' : 'Start Dragging'}
               </button>
             </div>

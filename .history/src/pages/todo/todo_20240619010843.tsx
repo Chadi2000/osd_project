@@ -8,7 +8,7 @@ import InputField from '../../components/InputField/InputField.tsx';
 import HeaderTodo from '../../components/headerTodo/HeaderTodo.tsx';
 import BoxTodo from '../../components/boxTodo/BoxTodo.tsx';
 import {toast, Toaster} from 'react-hot-toast'
-import { DndContext, closestCenter } from '@dnd-kit/core';
+import { DndContext, closestCenter, useDraggable } from '@dnd-kit/core';
 import { SortableContext, useSortable, arrayMove } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -25,7 +25,6 @@ const Todo = () => {
   const[importance, setImportance] = useState('Low');
   const [searchTerm, setSearchTerm] = useState('');
   const [isInputVisible, setIsInputVisible] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
   interface Todo {
     Id: number;
     Title: string;
@@ -55,40 +54,25 @@ const Todo = () => {
     todo.Title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getDataByStatus = (status, isDragging) => {
+  const getDataByStatus = (status) => {
     return filteredTodos
       .sort((a, b) => b.Id - a.Id)
       .filter(todo => todo.Status === status)
       .map((todo, index) => (
-        isDragging ? (
-          <SortableItem
-            key={`${todo.Id}-${index}`}
-            id={todo.Id}
-            todo={todo}
-          />
-        ) : (
-          <BoxTodo
-            key={`${todo.Id}-${index}`}
-            Id={todo.Id}
-            title={todo.Title}
-            category={todo.Category}
-            dueDate={todo.DueDate.slice(0, 10)}
-            estimate={todo.Estimate}
-            importance={todo.Importance}
-          />
-        )
+        <SortableItem
+          key={`${todo.Id}-${index}`}
+          id={todo.Id}
+          todo={todo}
+        />
       ));
   };
-  
   const handleValueChange = (e) => {
     const value = e.target.value;
     if (value >= 0) {
       setEstimatedValue(value);
     }
   };
-  const handleDragging = () =>{
-    setIsDragging(!isDragging);
-  }
+
   const handleUnitChange = (e) => {
     setEstimatedUnit(e.target.value);
   };
@@ -132,7 +116,7 @@ const Todo = () => {
 
       setTodos((prevTodos) => [newTodo, ...prevTodos]);
       console.log('new todos:', JSON.stringify([newTodo, ...todos]));
-      getDataByStatus('Todo',isDragging);
+      getDataByStatus('Todo');
       fetchTodos();
       setTitle('');
       setCategory('');
@@ -290,11 +274,6 @@ const Todo = () => {
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={todos.map(todo => todo.Id)}>
           <div className='background'>
-            <div style={{position:'absolute',left:'1600px',top: isQuoteVisible ? '550px' : '482px'}}>
-              <button className='dragging_button' onClick={handleDragging}>
-                {isDragging? 'Stop Dragging' : 'Start Dragging'}
-              </button>
-            </div>
             <div>
               <div style={{ display: 'flex' }}>
                 <div style={{ position: 'absolute', top: isQuoteVisible ? '168px' : '100px', left: '34px' }}>
@@ -302,7 +281,7 @@ const Todo = () => {
                     status='To Do' />
                 </div>
                 <div style={{ border: '2px solid' ,borderRadius:'10px', height:'1000px',position: 'absolute', left: '34px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {getDataByStatus('Todo',isDragging)}
+                  {getDataByStatus('Todo')}
                 </div>
               </div>
               <div>
@@ -311,7 +290,7 @@ const Todo = () => {
                     status='Doing' />
                 </div>
                 <div style={{ border: '2px solid', borderRadius:'10px',height:'1000px', width:'418px', position: 'absolute', left: '487px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {getDataByStatus('Doing',isDragging)}
+                  {getDataByStatus('Doing')}
                 </div>
               </div>
               <div>
@@ -320,7 +299,7 @@ const Todo = () => {
                     status='Done' />
                 </div>
                 <div style={{ border: '2px solid', borderRadius:'10px',height:'1000px', position: 'absolute', left: '939px', top: isQuoteVisible ? '226px' : '158px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                  {getDataByStatus('Done',isDragging)}
+                  {getDataByStatus('Done')}
                 </div>
               </div>
             </div>
@@ -337,16 +316,16 @@ const Todo = () => {
 export default Todo;
 
 const SortableItem = ({ id, todo }) => {
-  const { attributes, listeners, setNodeRef, transform, transition,isDragging } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({ id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging?0.5 :1
+    transform: transform ? CSS.Transform.toString(transform) : undefined,
+    transition: transform ? 'transform 200ms ease' : undefined,  // Add transition only if transform exists
+    touchAction: 'none'  // Prevents touch devices from scrolling while dragging
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes}>
       <BoxTodo
         Id={todo.Id}
         title={todo.Title}
@@ -354,6 +333,7 @@ const SortableItem = ({ id, todo }) => {
         dueDate={todo.DueDate.slice(0, 10)}
         estimate={todo.Estimate}
         importance={todo.Importance}
+        listeners={listeners}  // Pass listeners to BoxTodo
       />
     </div>
   );

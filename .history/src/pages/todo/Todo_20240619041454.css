@@ -137,26 +137,30 @@
 
 .dragging_button {
     cursor: pointer;
-    width: 160px;
-    height: 45px;
+    width: 150px; /* Adjust width as per your design */
+    height: 40px; /* Adjust height as per your design */
     color: white;
     background: linear-gradient(180deg, #6E4C85 0%, #2D2B52 100%);
     font-family: HelveticaNeue, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 14px; /* Adjust font size as needed */
+    font-weight: bold; /* Adjust font weight as needed */
     border: none;
     border-radius: 20px;
-    outline: none;
+    outline: none; /* Remove outline on focus */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline for anchor tags if needed */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
   }
-
+  
   .dragging_button:hover {
-    background-color: #5a3c6f;
+    background-color: #5a3c6f; /* Darken the background color on hover */
+  }
+  
+  .dragging_button:active {
+    background-color: #452c52; /* Darken the background color on active state (when clicked) */
   }
 
 .background{

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './boxtodo.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faXmark, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faEdit, faGripVertical } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
+const BoxTodo = ({ Id, title, category, dueDate, estimate, importance, listeners }) => {
   const [backgroundColor, setBackGroundColor] = useState('');
   const [currentTitle, setCurrentTitle] = useState(title);
   const [initialTitle, setInitialTitle] = useState(title);
@@ -20,11 +20,10 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
     }
   };
 
-  const handleTitleClick = (e) => {
-    // Prevent propagation to parent elements like SortableItem
-    e.stopPropagation();
+  const handleTitleClick = () => {
     setIsEditing(true);
     setInitialTitle(currentTitle);
+    console.log(Id);
   };
 
   const handleCancelEdit = () => {
@@ -35,8 +34,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
   const handleConfirmEdit = () => {
     const url = `https://localhost:44387/api/Test/UpdateTodoTitle?Id=${Id}&Title=${encodeURIComponent(currentTitle)}`;
 
-    axios
-      .put(url)
+    axios.put(url)
       .then((result) => {
         alert(result.data);
         setIsEditing(false);
@@ -44,6 +42,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
       .catch((error) => {
         alert(error.message);
       });
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -52,6 +51,9 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
 
   return (
     <div className='boxTodo_container'>
+      <div className='drag_handle' {...listeners}>
+        <FontAwesomeIcon icon={faGripVertical} />
+      </div>
       <div className='boxTodo_content'>
         {isEditing ? (
           <div>
@@ -87,7 +89,7 @@ const BoxTodo = ({ Id, title, category, dueDate, estimate, importance }) => {
               className='edit_icon'
               onClick={handleTitleClick}
               icon={faEdit}
-              style={{ color: 'white', cursor: 'pointer' }}
+              style={{ color: 'white' }}
             />
           </div>
         )}

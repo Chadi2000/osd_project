@@ -135,29 +135,15 @@
     cursor: pointer;
 }
 
-.dragging_button {
+.dragging_button{
     cursor: pointer;
-    width: 160px;
-    height: 45px;
+    padding: 10px;
     color: white;
-    background: linear-gradient(180deg, #6E4C85 0%, #2D2B52 100%);
+    background: transparent linear-gradient(180deg, #6E4C85 0%, #2D2B52 100%) 0% 0% no-repeat padding-box;
     font-family: HelveticaNeue, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
     border: none;
     border-radius: 20px;
-    outline: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-  }
-
-  .dragging_button:hover {
-    background-color: #5a3c6f;
-  }
+}
 
 .background{
     width: 1920px;
